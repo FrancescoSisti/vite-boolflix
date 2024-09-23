@@ -39,6 +39,10 @@ const getPosterUrl = (posterPath) => {
 </script>
 
 <style scoped>
+.container {
+  padding-top: 6rem; /* Aggiunto padding top per distaccare i contenuti dall'header */
+}
+
 .results {
   display: flex;
   flex-wrap: wrap;

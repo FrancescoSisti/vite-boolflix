@@ -61,6 +61,7 @@ const reloadPage = () => {
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   overflow: hidden;
+  box-sizing: border-box; /* Assicura che il padding sia incluso nelle dimensioni */
 }
 
 .header-left {
