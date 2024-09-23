@@ -41,5 +41,20 @@ onMounted(() => {
   background-color: #141414; /* Stesso sfondo dell'header */
   color: white; /* Colore del testo per contrastare con lo sfondo scuro */
   padding-top: 6rem; /* Aggiungi un padding per evitare che il contenuto venga coperto dall'header */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  #app {
+    padding-top: 5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #app {
+    padding-top: 4rem;
+  }
 }
 </style>

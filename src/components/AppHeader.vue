@@ -1,7 +1,7 @@
 <template>
   <header class="header-container">
     <div class="header-left">
-      <img src="../assets/netflix-logo.png" alt="Netflix Logo" class="logo">
+      <img src="../assets/netflix-logo.png" alt="Netflix Logo" class="logo" @click="reloadPage">
       <nav>
         <ul class="nav-links">
           <li><a href="#" class="nav-link">Home</a></li>
@@ -40,6 +40,10 @@ const search = async () => {
 
   emit('update:results', [...movieData.results, ...tvData.results]);
 };
+
+const reloadPage = () => {
+  window.location.reload();
+};
 </script>
 
 <style scoped>
@@ -52,9 +56,11 @@ const search = async () => {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  right: 0;
+  width: 100%;
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
 }
 
 .header-left {
@@ -65,6 +71,7 @@ const search = async () => {
 .logo {
   height: 2.5rem;
   margin-right: 2rem;
+  cursor: pointer;
 }
 
 .nav-links {
@@ -131,5 +138,26 @@ const search = async () => {
 
 .search-button:active {
   transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .logo {
+    height: 2rem;
+    margin-right: 1rem;
+  }
+
+  .search-input {
+    width: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-input {
+    width: 100px;
+  }
 }
 </style>
