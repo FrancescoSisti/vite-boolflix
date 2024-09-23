@@ -44,9 +44,8 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh; /* Estende il container */
-  width: 100vw;  /* Estende il container */
-  overflow: hidden; /* Evita lo scroll */
+  min-height: 100vh; /* Cambiato da height a min-height per permettere lo scorrimento */
+  width: 100%;  /* Cambiato da 100vw a 100% per evitare overflow orizzontale */
   box-sizing: border-box; /* Assicura che il padding sia incluso nelle dimensioni */
 }
 

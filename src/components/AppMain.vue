@@ -41,6 +41,8 @@ const getPosterUrl = (posterPath) => {
 <style scoped>
 .container {
   padding-top: 6rem; /* Aggiunto padding top per distaccare i contenuti dall'header */
+  width: 100%; /* Assicura che il contenitore prenda tutta la larghezza */
+  flex: 1; /* Permette al contenitore di crescere per riempire lo spazio disponibile */
 }
 
 .results {

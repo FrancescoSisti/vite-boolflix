@@ -1,21 +1,23 @@
 <template>
-  <div class="modal" v-if="isVisible">
-    <div class="modal-content">
-      <span class="close" @click="closeModal">&times;</span>
-      <div class="modal-body" v-if="movieDetails">
-        <h2>{{ movieDetails.title || movieDetails.name }}</h2>
-        <img :src="getPosterUrl(movieDetails.poster_path)" alt="Poster" class="poster">
-        <p><strong>Release Date:</strong> {{ movieDetails.release_date || movieDetails.first_air_date }}</p>
-        <p><strong>Overview:</strong> {{ movieDetails.overview }}</p>
-        <p><strong>Vote Average:</strong> {{ movieDetails.vote_average }}</p>
-        <p><strong>Origin Country:</strong> {{ movieDetails.origin_country }}</p>
+  <transition name="modal-sketch">
+    <div class="modal" v-if="isVisible" @click.self="closeModal">
+      <div class="modal-content">
+        <span class="close" @click="closeModal">&times;</span>
+        <div class="modal-body" v-if="movieDetails">
+          <h2>{{ movieDetails.title || movieDetails.name }}</h2>
+          <img :src="getPosterUrl(movieDetails.poster_path)" alt="Poster" class="poster">
+          <p><strong>Release Date:</strong> {{ movieDetails.release_date || movieDetails.first_air_date }}</p>
+          <p><strong>Overview:</strong> {{ movieDetails.overview }}</p>
+          <p><strong>Vote Average:</strong> {{ movieDetails.vote_average }}</p>
+          <p><strong>Origin Country:</strong> {{ movieDetails.origin_country }}</p>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
 
 const props = defineProps({
   movie: {
@@ -51,10 +53,29 @@ const fetchMovieDetails = async () => {
   movieDetails.value = data;
 };
 
+const handleKeyUp = (event) => {
+  if (event.key === 'Escape') {
+    closeModal();
+  }
+};
+
 watch(() => props.isVisible, (newVal) => {
   if (newVal) {
     fetchMovieDetails();
+    document.addEventListener('keyup', handleKeyUp);
+  } else {
+    document.removeEventListener('keyup', handleKeyUp);
   }
+});
+
+onMounted(() => {
+  if (props.isVisible) {
+    document.addEventListener('keyup', handleKeyUp);
+  }
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keyup', handleKeyUp);
 });
 </script>
 
@@ -83,6 +104,7 @@ watch(() => props.isVisible, (newVal) => {
   max-height: 90%;
   overflow-y: auto;
   position: relative;
+  animation: sketch-in 0.5s ease forwards;
 }
 
 .close {
@@ -141,5 +163,27 @@ watch(() => props.isVisible, (newVal) => {
   .close {
     font-size: 1.2rem;
   }
+}
+
+@keyframes sketch-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+.modal-sketch-enter-active, .modal-sketch-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+}
+.modal-sketch-enter, .modal-sketch-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
+  filter: blur(10px);
 }
 </style>

@@ -12,6 +12,7 @@ Benvenuti in **Vite Boolflix**, un'applicazione di streaming video sviluppata co
 - **Modale per i dettagli Film**: Visualizza i dettagli completi di un film o di una serie TV in un modal interattivo.
 - **Caricamento Poster Dinamico**: I poster vengono caricati dinamicamente utilizzando l'API di The Movie Database (TMDb).
 - **Ricerca Combinata**: Effettua ricerche combinate per film e serie TV contemporaneamente.
+- **Supporto per la Lingua Italiana**: L'applicazione supporta la lingua italiana per una migliore esperienza utente.
 
 ## 🛠️ Tecnologie Utilizzate
 
