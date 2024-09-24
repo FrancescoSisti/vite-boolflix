@@ -1,7 +1,8 @@
 <template>
   <main class="container">
     <div v-if="results.length" class="results">
-      <div v-for="result in results" :key="result.id" class="result-item" :style="{ backgroundImage: `url(${getPosterUrl(result.poster_path)})` }" @click="openModal(result)">
+      <div v-for="result in results" :key="result.id" class="result-item"
+        :style="{ backgroundImage: `url(${getPosterUrl(result.poster_path)})` }" @click="openModal(result)">
       </div>
     </div>
     <MovieModal :movie="selectedMovie" :isVisible="isModalVisible" @close="closeModal" />
@@ -40,9 +41,12 @@ const getPosterUrl = (posterPath) => {
 
 <style scoped>
 .container {
-  padding-top: 6rem; /* Aggiunto padding top per distaccare i contenuti dall'header */
-  width: 100%; /* Assicura che il contenitore prenda tutta la larghezza */
-  flex: 1; /* Permette al contenitore di crescere per riempire lo spazio disponibile */
+  padding-top: 6rem;
+  /* Aggiunto padding top per distaccare i contenuti dall'header */
+  width: 100%;
+  /* Assicura che il contenitore prenda tutta la larghezza */
+  flex: 1;
+  /* Permette al contenitore di crescere per riempire lo spazio disponibile */
 }
 
 .results {

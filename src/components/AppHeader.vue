@@ -12,16 +12,21 @@
       </nav>
     </div>
     <div class="header-right">
-      <input type="text" v-model="query" @keyup.enter="search" class="search-input" placeholder="Search...">
-      <button @click="search" class="search-button">Search</button>
+      <input type="text" v-model="query" @keyup.enter="search" class="search-input" placeholder="Cerca..">
+      <button @click="search" class="search-button">Cerca</button>
+      <button @click="toggleTheme" class="theme-button">
+        {{ isDarkTheme ? '☀️ Tema Chiaro' : '🌙 Tema Scuro' }}
+      </button>
     </div>
   </header>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { useTheme } from '../composables/useTheme';
 
 const query = ref('');
+const { isDarkTheme, toggleTheme } = useTheme();
 const emit = defineEmits(['update:results']);
 
 const search = async () => {
@@ -44,6 +49,8 @@ const search = async () => {
 const reloadPage = () => {
   window.location.reload();
 };
+
+// Remove the existing toggleTheme function and watch
 </script>
 
 <style scoped>
@@ -52,7 +59,7 @@ const reloadPage = () => {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #141414;
+  background-color: var(--background-color);
   position: fixed;
   top: 0;
   left: 0;
@@ -61,7 +68,8 @@ const reloadPage = () => {
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   overflow: hidden;
-  box-sizing: border-box; /* Assicura che il padding sia incluso nelle dimensioni */
+  box-sizing: border-box;
+  /* Assicura che il padding sia incluso nelle dimensioni */
 }
 
 .header-left {
@@ -73,6 +81,13 @@ const reloadPage = () => {
   height: 2.5rem;
   margin-right: 2rem;
   cursor: pointer;
+  transition: transform 0.3s ease;
+  /* Aggiunto per l'effetto pop up */
+}
+
+.logo:hover {
+  transform: scale(1.1);
+  /* Effetto pop up */
 }
 
 .nav-links {
@@ -83,17 +98,20 @@ const reloadPage = () => {
 }
 
 .nav-link {
-  color: white;
+  color: var(--text-color);
   text-decoration: none;
   margin-right: 1.5rem;
   font-size: 1rem;
-  transition: color 0.3s ease, transform 0.3s ease;
+  transition: color 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease;
+  /* Aggiunto text-shadow per l'effetto neon */
 }
 
 .nav-link:hover {
   color: #e50914;
   transform: scale(1.1);
   text-decoration: none;
+  text-shadow: 0 0 5px #e50914, 0 0 10px #e50914, 0 0 15px #e50914;
+  /* Effetto neon */
 }
 
 .header-right {
@@ -104,10 +122,10 @@ const reloadPage = () => {
 .search-input {
   padding: 0.5rem;
   border-radius: 4px;
-  border: 2px solid white;
+  border: 2px solid var(--text-color);
   margin-right: 0.5rem;
-  background-color: #333;
-  color: white;
+  background-color: var(--background-color);
+  color: var(--text-color);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -128,16 +146,43 @@ const reloadPage = () => {
   background-color: #e50914;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.1s ease;
+  transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+  /* Aggiunto box-shadow per l'effetto neon */
   display: flex;
   align-items: center;
 }
 
 .search-button:hover {
   background-color: #f40612;
+  box-shadow: 0 0 10px #f40612, 0 0 20px #f40612, 0 0 30px #f40612;
+  /* Effetto neon */
 }
 
 .search-button:active {
+  transform: scale(0.95);
+}
+
+.theme-button {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--text-color);
+  border-radius: 4px;
+  background-color: var(--button-background-color);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  /* Aggiunto box-shadow per l'effetto neon */
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.theme-button:hover {
+  background-color: var(--button-hover-background-color);
+  box-shadow: 0 0 10px var(--button-hover-background-color), 0 0 20px var(--button-hover-background-color), 0 0 30px var(--button-hover-background-color);
+  /* Effetto neon */
+}
+
+.theme-button:active {
   transform: scale(0.95);
 }
 

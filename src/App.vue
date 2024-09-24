@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ 'light-theme': !isDarkTheme, 'dark-theme': isDarkTheme }">
     <AppHeader @update:results="updateResults" />
     <AppMain :results="filteredResults" />
   </div>
@@ -9,6 +9,9 @@
 import { ref, computed, onMounted } from 'vue';
 import AppHeader from './components/AppHeader.vue';
 import AppMain from './components/AppMain.vue';
+import { useTheme } from './composables/useTheme';
+
+const { isDarkTheme } = useTheme();
 
 const defaultResults = ref([]);
 const results = ref([]);
@@ -36,28 +39,96 @@ onMounted(() => {
 });
 </script>
 
-<style>
+<style lang="scss">
 #app {
-  background-color: #141414;
-  color: white;
-  padding-top: 6rem;
+  background-color: var(--main-background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding-top: 4rem; // Ridotto da 6rem a 4rem
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh; /* Cambiato da height a min-height per permettere lo scorrimento */
-  width: 100%;  /* Cambiato da 100vw a 100% per evitare overflow orizzontale */
-  box-sizing: border-box; /* Assicura che il padding sia incluso nelle dimensioni */
-}
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
 
-@media (max-width: 768px) {
-  #app {
-    padding-top: 5rem;
+  @media (max-width: 768px) {
+    padding-top: 3.5rem; // Ridotto da 5rem a 3.5rem
+  }
+
+  @media (max-width: 480px) {
+    padding-top: 3rem; // Ridotto da 4rem a 3rem
   }
 }
 
-@media (max-width: 480px) {
-  #app {
-    padding-top: 4rem;
+.light-theme {
+  --main-background-color: #f0f0f0;
+  --text-color: #213547;
+}
+
+.dark-theme {
+  --main-background-color: #141414;
+  --text-color: rgba(255, 255, 255, 0.87);
+}
+
+// SASS mixins for theme colors
+@mixin light-theme {
+  --main-background-color: #f0f0f0;
+  --text-color: #213547;
+  --header-background-color: #ffffff;
+  --card-background-color: #ffffff;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+@mixin dark-theme {
+  --main-background-color: #141414;
+  --text-color: rgba(255, 255, 255, 0.87);
+  --header-background-color: #1f1f1f;
+  --card-background-color: #2a2a2a;
+  --shadow-color: rgba(255, 255, 255, 0.1);
+}
+
+// Apply themes
+.light-theme {
+  @include light-theme;
+}
+
+.dark-theme {
+  @include dark-theme;
+}
+
+// New SASS functions
+@function lighten-color($color, $amount) {
+  @return lighten($color, $amount);
+}
+
+@function darken-color($color, $amount) {
+  @return darken($color, $amount);
+}
+
+// Example usage of new functions
+.card {
+  background-color: var(--card-background-color);
+  box-shadow: 0 2px 8px var(--shadow-color);
+
+  .light-theme & {
+    border: 1px solid lighten-color(#000000, 80%);
+  }
+
+  .dark-theme & {
+    border: 1px solid darken-color(#ffffff, 80%);
+  }
+}
+
+.header {
+  background-color: var(--header-background-color);
+
+  .light-theme & {
+    border-bottom: 1px solid lighten-color(#000000, 90%);
+  }
+
+  .dark-theme & {
+    border-bottom: 1px solid darken-color(#ffffff, 90%);
   }
 }
 </style>
